@@ -1,0 +1,1 @@
+"""QueryCreator test suite."""

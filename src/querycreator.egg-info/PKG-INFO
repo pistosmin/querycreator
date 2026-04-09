@@ -1,0 +1,17 @@
+Metadata-Version: 2.4
+Name: querycreator
+Version: 0.1.0
+Summary: LLM-powered Oracle DB query generator for Steel Agent
+Requires-Python: >=3.11
+Requires-Dist: oracledb>=2.0.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: sqlparse>=0.5.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+Requires-Dist: pytest-cov>=5.0; extra == "dev"
+Provides-Extra: admin
+Requires-Dist: fastapi>=0.110.0; extra == "admin"
+Requires-Dist: uvicorn>=0.29.0; extra == "admin"
+Requires-Dist: jinja2>=3.1.0; extra == "admin"
+Provides-Extra: cli
+Requires-Dist: click>=8.1.0; extra == "cli"
