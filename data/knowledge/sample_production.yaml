@@ -1,0 +1,16 @@
+schema: PROD
+table_hints:
+  TB_PROD_PROGRESS:
+    index_hints:
+      - "PROD_DATE 컬럼에 인덱스가 있으므로 날짜 조건에 반드시 활용하세요"
+      - "ORDER_NO 컬럼에 인덱스가 있으므로 주문번호 조건 시 활용하세요"
+    warnings:
+      - "대용량 테이블 - 반드시 WHERE 조건 필수"
+    sample_queries:
+      - description: "주문별 공정별 생산량 합계"
+        sql: "SELECT proc_cd, SUM(weight) AS total_weight FROM tb_prod_progress WHERE order_no = :order_no GROUP BY proc_cd ORDER BY proc_cd"
+join_rules:
+  - tables: [TB_ORDER, TB_PROD_PROGRESS]
+    hint: "반드시 ORDER_NO로 조인하세요."
+forbidden_patterns:
+  - "CROSS JOIN"
