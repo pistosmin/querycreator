@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a Python app for Steel Agent that lets LLMs auto-generate and execute Oracle SQL queries based on business metadata, safely returning results to end users.
+**Goal:** Build a Python app for Agent that lets LLMs auto-generate and execute Oracle SQL queries based on business metadata, safely returning results to end users.
 
 **Architecture:** Three LLM-callable tools (`get_metadata`, `execute_query`, `call_function`) backed by a 4-layer metadata system (business dictionary, physical metadata, common codes, operator knowledge). All queries pass through a validation layer enforcing safety rules before execution on a SELECT-only Oracle account. A DB abstraction layer with mock support enables development without a live Oracle instance.
 
@@ -19,7 +19,7 @@ querycreator/
 ├── src/
 │   └── querycreator/
 │       ├── __init__.py
-│       ├── app.py                          # Steel Agent entry point
+│       ├── app.py                          # Agent entry point
 │       ├── config/
 │       │   ├── __init__.py
 │       │   ├── db_config.py                # Oracle connection settings (env-based)
@@ -84,7 +84,7 @@ querycreator/
 │   ├── api-reference.md
 │   └── safety-rules.md
 └── prompts/
-    └── system_prompt.md                    # LLM system prompt for Steel Agent
+    └── system_prompt.md                    # LLM system prompt for Agent
 ```
 
 ---
@@ -106,7 +106,7 @@ querycreator/
 [project]
 name = "querycreator"
 version = "0.1.0"
-description = "LLM-powered Oracle DB query generator for Steel Agent"
+description = "LLM-powered Oracle DB query generator for Agent"
 requires-python = ">=3.11"
 dependencies = [
     "oracledb>=2.0.0",
@@ -2386,7 +2386,7 @@ Expected: FAIL
 - [ ] **Step 3: Create `src/querycreator/core/tools/__init__.py`**
 
 ```python
-"""LLM-callable tools for Steel Agent."""
+"""LLM-callable tools for Agent."""
 ```
 
 - [ ] **Step 4: Implement `src/querycreator/core/tools/get_metadata.py`**
@@ -2470,7 +2470,7 @@ class GetMetadataTool:
 
     @staticmethod
     def tool_schema() -> dict[str, Any]:
-        """Return tool schema for Steel Agent registration."""
+        """Return tool schema for Agent registration."""
         return {
             "name": "get_metadata",
             "description": (
@@ -2531,7 +2531,7 @@ class ExecuteQueryTool:
 
     @staticmethod
     def tool_schema() -> dict[str, Any]:
-        """Return tool schema for Steel Agent registration."""
+        """Return tool schema for Agent registration."""
         return {
             "name": "execute_query",
             "description": (
@@ -2594,7 +2594,7 @@ class CallFunctionTool:
 
     @staticmethod
     def tool_schema() -> dict[str, Any]:
-        """Return tool schema for Steel Agent registration."""
+        """Return tool schema for Agent registration."""
         return {
             "name": "call_function",
             "description": (
@@ -2642,7 +2642,7 @@ git push
 - [ ] **Step 1: Implement `src/querycreator/app.py`**
 
 ```python
-"""Steel Agent app entry point.
+"""Agent app entry point.
 
 Initializes all components and exposes tools for LLM invocation.
 """
@@ -2708,7 +2708,7 @@ class QueryCreatorApp:
         )
 
     def get_tool_schemas(self) -> list[dict[str, Any]]:
-        """Return all tool schemas for Steel Agent registration."""
+        """Return all tool schemas for Agent registration."""
         return [
             GetMetadataTool.tool_schema(),
             ExecuteQueryTool.tool_schema(),
@@ -2716,7 +2716,7 @@ class QueryCreatorApp:
         ]
 
     def handle_tool_call(self, tool_name: str, arguments: dict[str, Any]) -> str:
-        """Route a tool call from Steel Agent to the appropriate handler."""
+        """Route a tool call from Agent to the appropriate handler."""
         if tool_name == "get_metadata":
             return self.get_metadata.run(**arguments)
         elif tool_name == "execute_query":
@@ -2741,7 +2741,7 @@ def create_app_from_env(dict_dir: str = "data/dictionaries") -> QueryCreatorApp:
 
 ```bash
 git add src/querycreator/app.py
-git commit -m "feat: app entry point - wires all components for Steel Agent"
+git commit -m "feat: app entry point - wires all components for Agent"
 git push
 ```
 
@@ -3455,7 +3455,7 @@ git push
 
 ```bash
 git add prompts/
-git commit -m "feat: LLM system prompt for Steel Agent"
+git commit -m "feat: LLM system prompt for Agent"
 git push
 ```
 
@@ -3660,7 +3660,7 @@ git push
 ```markdown
 # QueryCreator
 
-Oracle DB 데이터 조회를 LLM이 자동으로 처리하는 Steel Agent 앱.
+Oracle DB 데이터 조회를 LLM이 자동으로 처리하는 Agent 앱.
 
 시스템 담당자에게 반복적으로 들어오는 데이터 확인 문의를 LLM이 자동으로 처리합니다.
 업무 사전과 DB 메타데이터를 기반으로 SQL을 자동 생성/실행하고 결과를 사용자에게 반환합니다.
@@ -3668,7 +3668,7 @@ Oracle DB 데이터 조회를 LLM이 자동으로 처리하는 Steel Agent 앱.
 ## 아키텍처
 
 ```
-사용자 → Steel Agent → LLM ↔ QueryCreator (Python) → Oracle DB
+사용자 → Agent → LLM ↔ QueryCreator (Python) → Oracle DB
 ```
 
 LLM에게 3가지 도구를 제공합니다:
@@ -3708,10 +3708,10 @@ pytest tests/ -v
 ```markdown
 # 설치 및 초기 설정 가이드
 
-## 1. Steel Agent 앱 등록
+## 1. Agent 앱 등록
 
-Steel Agent 플랫폼에서 Python 앱으로 등록합니다.
-(등록 절차는 Steel Agent 문서 참조)
+Agent 플랫폼에서 Python 앱으로 등록합니다.
+(등록 절차는 Agent 문서 참조)
 
 ## 2. 환경변수 설정
 
@@ -3815,7 +3815,7 @@ python -c "from querycreator.admin.cli import validate_dictionary; print(validat
 - [ ] 4. 업무 사전 검증 (`validate_dictionary`)
 - [ ] 5. 운영자 힌트 등록 (선택, `data/knowledge/<schema>.yaml`)
 - [ ] 6. 테스트 실행
-- [ ] 7. Steel Agent에 앱 배포
+- [ ] 7. Agent에 앱 배포
 - [ ] 8. 파일럿 사용자 테스트 (5명 이내)
 - [ ] 9. 로그 분석 후 업무 사전/힌트 보강
 

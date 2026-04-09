@@ -1,4 +1,4 @@
-"""Steel Agent app entry point."""
+"""Agent app entry point."""
 from __future__ import annotations
 from typing import Any
 from querycreator.config.db_config import DBConfig

@@ -1,15 +1,15 @@
 # QueryCreator
 
-Oracle DB 조회 전용 AI 에이전트 도구 서버입니다. Steel Agent(MCP 호환 LLM 에이전트)와 연동하여 자연어 질의를 안전한 Oracle SQL로 변환하고 실행합니다.
+Oracle DB 조회 전용 AI 에이전트 도구 서버입니다. Agent(MCP 호환 LLM 에이전트)와 연동하여 자연어 질의를 안전한 Oracle SQL로 변환하고 실행합니다.
 
 ## 아키텍처
 
 ```
-사용자 → Steel Agent → LLM ↔ QueryCreator → Oracle DB
+사용자 → Agent → LLM ↔ QueryCreator → Oracle DB
 ```
 
-1. 사용자가 Steel Agent에 자연어로 질의합니다.
-2. Steel Agent는 LLM을 호출하며, LLM은 QueryCreator 도구를 사용합니다.
+1. 사용자가 Agent에 자연어로 질의합니다.
+2. Agent는 LLM을 호출하며, LLM은 QueryCreator 도구를 사용합니다.
 3. QueryCreator는 메타데이터·업무 사전·지식 힌트를 활용해 SQL을 생성·검증·실행합니다.
 4. 결과가 사용자에게 반환됩니다.
 

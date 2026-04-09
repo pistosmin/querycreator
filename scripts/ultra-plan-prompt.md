@@ -3,16 +3,16 @@
 ## 프로젝트 개요
 
 Oracle DB 레거시 시스템의 데이터 조회를 LLM이 자동으로 처리하는 Python 앱 개발.
-Steel Agent(Allganize) 플랫폼 위에서 서버리스로 동작하며, LLM이 업무 사전과 DB 메타데이터를 참조하여 SQL을 자동 생성/실행하고 사용자에게 결과를 반환한다.
+Agent 플랫폼 위에서 서버리스로 동작하며, LLM이 업무 사전과 DB 메타데이터를 참조하여 SQL을 자동 생성/실행하고 사용자에게 결과를 반환한다.
 
 설계 문서: `docs/superpowers/specs/2026-04-09-querycreator-design.md`
 
 ## 핵심 제약조건
 
-- **서버 없음**: Steel Agent가 Python 코드를 서버리스로 실행. 별도 서버 운영 불가.
+- **서버 없음**: Agent가 Python 코드를 서버리스로 실행. 별도 서버 운영 불가.
 - **SELECT 전용**: Oracle DB는 읽기 전용 계정으로만 접속.
-- **LLM 제어 불가**: LLM은 Steel Agent 플랫폼이 제공. 우리는 도구(Tool)만 제공.
-- **패키지 제약**: Steel Agent 런타임에서 사용 가능한 패키지 확인 필요 (oracledb thin 모드 사용 전제).
+- **LLM 제어 불가**: LLM은 Agent 플랫폼이 제공. 우리는 도구(Tool)만 제공.
+- **패키지 제약**: Agent 런타임에서 사용 가능한 패키지 확인 필요 (oracledb thin 모드 사용 전제).
 - **개발 과정별 GitHub 커밋/푸시**: 각 단계 완료 시 커밋하고 원격 저장소에 푸시.
 
 ## 구현 목표
@@ -111,7 +111,7 @@ LLM에게 3가지 도구를 제공:
 - [ ] **커밋 & 푸시**: "feat: Oracle 쿼리 실행기 + 결과 포맷터"
 
 ### Phase 7: LLM 도구 정의
-**목표**: Steel Agent에서 LLM이 호출할 수 있는 도구(Tool) 구현
+**목표**: Agent에서 LLM이 호출할 수 있는 도구(Tool) 구현
 
 - [ ] `core/tools/get_metadata.py`:
   - 입력: 업무 키워드 또는 테이블명
@@ -124,7 +124,7 @@ LLM에게 3가지 도구를 제공:
 - [ ] `core/tools/call_function.py`:
   - 입력: 펑션명 + 파라미터
   - 처리: 펑션 카탈로그에서 존재 확인 → 호출 → 결과 반환
-- [ ] `app.py`: Steel Agent 진입점 — 도구 등록 및 초기화
+- [ ] `app.py`: Agent 진입점 — 도구 등록 및 초기화
 - [ ] 도구 통합 테스트 (메타데이터 조회 → 쿼리 생성 시나리오 시뮬레이션)
 - [ ] **커밋 & 푸시**: "feat: LLM 도구 정의 - get_metadata, execute_query, call_function"
 
@@ -203,7 +203,7 @@ LLM에게 3가지 도구를 제공:
 
 - [ ] **README.md**: 프로젝트 개요, 아키텍처 다이어그램, 빠른 시작 가이드
 - [ ] **docs/setup-guide.md** — 설치 및 초기 설정 가이드:
-  - Steel Agent 앱 등록 절차
+  - Agent 앱 등록 절차
   - Oracle DB 접속 설정 (환경변수)
   - 첫 스키마 메타데이터 수집 방법
   - 업무 사전 최초 작성 방법
@@ -219,17 +219,17 @@ LLM에게 3가지 도구를 제공:
   - 예상 소요 시간 및 필요 인력
 - [ ] **docs/api-reference.md** — 도구(Tool) 상세 명세:
   - get_metadata, execute_query, call_function의 입력/출력/에러 코드 상세
-  - Steel Agent 앱 등록 시 도구 스키마 정의 방법
+  - Agent 앱 등록 시 도구 스키마 정의 방법
 - [ ] **docs/safety-rules.md** — 안전규칙 명세:
   - 기본 적용 규칙 목록 및 각 규칙의 목적
   - 규칙 커스터마이징 방법 (safety_rules.py 수정 가이드)
 - [ ] **커밋 & 푸시**: "docs: 설치/운영/수평전개/API 문서 작성"
 
-### Phase 13: Steel Agent 연동 및 배포
-**목표**: 실제 Steel Agent 플랫폼에 앱으로 등록하여 동작 확인
+### Phase 13: Agent 연동 및 배포
+**목표**: 실제 Agent 플랫폼에 앱으로 등록하여 동작 확인
 
-- [ ] **Steel Agent 앱 패키징**:
-  - Steel Agent가 요구하는 앱 등록 형식 확인 (시범 케이스 참조)
+- [ ] **Agent 앱 패키징**:
+  - Agent가 요구하는 앱 등록 형식 확인 (시범 케이스 참조)
   - 의존 패키지 목록 정리 (oracledb, pyyaml, sqlparse)
   - 환경변수 주입 방식 확인 (DB 접속 정보 등)
 - [ ] **시스템 프롬프트 작성**:
@@ -241,7 +241,7 @@ LLM에게 3가지 도구를 제공:
   - 1개 스키마, 소수 사용자(5명 이내)로 파일럿 운영
   - 피드백 수집 항목 정의: 응답 정확도, 응답 속도, 사용 편의성
   - 파일럿 기간 중 로그 분석 → 업무 사전/힌트 보강
-- [ ] **커밋 & 푸시**: "feat: Steel Agent 연동 패키징 및 시스템 프롬프트"
+- [ ] **커밋 & 푸시**: "feat: Agent 연동 패키징 및 시스템 프롬프트"
 
 ### Phase 14 (후순위): 관리자 웹 페이지
 **목표**: 웹 기반 관리 인터페이스
@@ -258,7 +258,7 @@ LLM에게 3가지 도구를 제공:
 
 | 구분 | 기술 | 이유 |
 |------|------|------|
-| 런타임 | Python 3.11+ | Steel Agent 플랫폼 호환 |
+| 런타임 | Python 3.11+ | Agent 플랫폼 호환 |
 | DB 드라이버 | oracledb (thin 모드) | Oracle Client 설치 불필요, cx_Oracle 후속 |
 | 설정 관리 | PyYAML | 업무 사전/지식 파일 관리 |
 | SQL 파싱 | sqlparse | 쿼리 검증을 위한 SQL 파싱 |
@@ -274,8 +274,8 @@ LLM에게 3가지 도구를 제공:
 
 ## 주의사항
 
-- Steel Agent의 Python 런타임 제약을 Phase 1에서 반드시 확인할 것 (설치 가능 패키지, 실행 시간 제한, 네트워크 접근 범위)
-- Oracle DB thin 모드 연결이 Steel Agent 환경에서 동작하는지 Phase 1에서 검증할 것
+- Agent의 Python 런타임 제약을 Phase 1에서 반드시 확인할 것 (설치 가능 패키지, 실행 시간 제한, 네트워크 접근 범위)
+- Oracle DB thin 모드 연결이 Agent 환경에서 동작하는지 Phase 1에서 검증할 것
 - 업무 사전 YAML은 실제 테이블 구조를 반영해야 하므로, 운영자(시스템 담당자)와 협의하여 작성
 - 각 Phase 완료 시 반드시 GitHub에 커밋 & 푸시하여 개발 이력 관리
 - **실제 Oracle DB가 없는 개발 환경에서는 Mock 기반으로 개발/테스트 진행** — Phase 10에서 정의한 Mock DB 환경 활용

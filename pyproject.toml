@@ -1,7 +1,7 @@
 [project]
 name = "querycreator"
 version = "0.1.0"
-description = "LLM-powered Oracle DB query generator for Steel Agent"
+description = "LLM-powered Oracle DB query generator for Agent"
 requires-python = ">=3.11"
 dependencies = [
     "oracledb>=2.0.0",

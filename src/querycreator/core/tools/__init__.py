@@ -1,1 +1,1 @@
-"""LLM-callable tools for Steel Agent."""
+"""LLM-callable tools for Agent."""

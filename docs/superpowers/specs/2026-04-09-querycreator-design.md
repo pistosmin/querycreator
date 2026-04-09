@@ -4,7 +4,7 @@
 
 Oracle DB 기반 레거시 시스템에서 시스템 담당자에게 반복적으로 들어오는 데이터 확인 문의를 LLM이 자동으로 처리하는 시스템.
 
-Steel Agent(Allganize) 플랫폼 위에서 Python 앱으로 동작하며, LLM이 메타데이터를 참조하여 SQL을 자동 생성/실행하고 결과를 사용자에게 반환한다.
+Agent 플랫폼 위에서 Python 앱으로 동작하며, LLM이 메타데이터를 참조하여 SQL을 자동 생성/실행하고 결과를 사용자에게 반환한다.
 
 ## 배경 및 문제
 
@@ -17,19 +17,19 @@ Steel Agent(Allganize) 플랫폼 위에서 Python 앱으로 동작하며, LLM이
 
 | 항목 | 내용 |
 |------|------|
-| 플랫폼 | Steel Agent (Allganize) — Python 앱 등록 방식 (서버리스) |
+| 플랫폼 | Agent — Python 앱 등록 방식 (서버리스) |
 | LLM | Qwen, H-Chat (Sonnet, GPT 5.4, Gemini 3.1) |
 | DB | Oracle, SELECT 전용 계정 |
 | 테이블 규모 | 스키마별 수십 개, 컬럼 수개~수백 개 |
 | 코드값 | 공통코드 테이블로 대부분 커버 |
 | 스토어드 펑션 | 정형화, 문서화 가능, 추가 개발 가능성 있음 |
-| 외부 서버 | 없음 — Steel Agent가 Python 코드 실행 |
+| 외부 서버 | 없음 — Agent가 Python 코드 실행 |
 
 ## 전체 아키텍처
 
 ```
 ┌─────────────┐     ┌──────────────────────────────────────────────────┐
-│  사용자       │     │  Steel Agent 플랫폼                                │
+│  사용자       │     │  Agent 플랫폼                                │
 │  (챗봇 UI)   │────>│                                                  │
 └─────────────┘     │  ┌─────────┐    ┌──────────────────────────────┐ │
                     │  │  LLM    │───>│  QueryCreator (Python 앱)    │ │
@@ -211,7 +211,7 @@ querycreator/
 ├── data/
 │   └── dictionaries/         # 업무 사전 YAML 파일
 │
-└── app.py                    # Steel Agent 등록 진입점
+└── app.py                    # Agent 등록 진입점
 ```
 
 ## 구현 우선순위
