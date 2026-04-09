@@ -1,0 +1,59 @@
+schema: PROD
+
+tables:
+  TB_ORDER:
+    business_name: "주문"
+    description: "고객 주문 마스터 테이블"
+    key_columns:
+      ORDER_NO: "주문번호"
+      CUST_CD: "고객코드"
+      ORDER_DATE: "주문일자"
+      STATUS_CD: "상태코드"
+    aliases:
+      - "수주"
+      - "오더"
+
+  TB_PROD_PROGRESS:
+    business_name: "진행량"
+    description: "공정별 생산 진행 현황"
+    key_columns:
+      ORDER_NO: "주문번호"
+      PROC_CD: "공정코드"
+      WEIGHT: "중량"
+      PROD_DATE: "생산일자"
+    aliases:
+      - "생산실적"
+      - "공정진행"
+
+  TB_PRODUCT:
+    business_name: "제품"
+    description: "제품 마스터 테이블"
+    key_columns:
+      PROD_CD: "제품코드"
+      PROD_NM: "제품명"
+      SPEC: "규격"
+      UNIT: "단위"
+    aliases:
+      - "품목"
+      - "자재"
+
+functions:
+  F_SUM_PROGRESS:
+    business_name: "공정별 진행량 합산"
+    description: "주문번호를 넣으면 공정 단계별 중량 합계를 리턴"
+    parameters:
+      P_ORDER_NO: "주문번호"
+    usage: "주문의 공정별 생산량 조회 시 사용"
+
+joins:
+  - tables:
+      - TB_ORDER
+      - TB_PROD_PROGRESS
+    condition: "TB_ORDER.ORDER_NO = TB_PROD_PROGRESS.ORDER_NO"
+    description: "주문-진행량 연결"
+
+  - tables:
+      - TB_ORDER
+      - TB_PRODUCT
+    condition: "TB_ORDER.PROD_CD = TB_PRODUCT.PROD_CD"
+    description: "주문-제품 연결"

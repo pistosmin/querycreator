@@ -1,0 +1,40 @@
+# ============================================================
+# Business Dictionary Template
+# ============================================================
+# Copy this file and rename it (without leading underscore).
+# Files starting with '_' are ignored during load.
+#
+# schema: DB schema name (e.g. PROD, DW, STG)
+# tables: mapping of DB table names to metadata
+# functions: mapping of DB function/procedure names to metadata
+# joins: list of common join conditions between tables
+# ============================================================
+
+schema: YOUR_SCHEMA
+
+tables:
+  TB_EXAMPLE:
+    business_name: "예시 테이블"
+    description: "이 테이블이 무엇을 담고 있는지 설명"
+    key_columns:
+      EXAMPLE_ID: "예시 ID"
+      EXAMPLE_NM: "예시 이름"
+      CREATE_DT: "생성일자"
+    aliases:
+      - "별칭1"
+      - "별칭2"
+
+functions:
+  F_EXAMPLE_FUNC:
+    business_name: "예시 함수"
+    description: "함수가 무엇을 하는지 설명"
+    parameters:
+      P_EXAMPLE_ID: "예시 ID"
+    usage: "언제 사용하는지 설명"
+
+joins:
+  - tables:
+      - TB_EXAMPLE
+      - TB_OTHER
+    condition: "TB_EXAMPLE.EXAMPLE_ID = TB_OTHER.EXAMPLE_ID"
+    description: "예시-기타 테이블 조인 조건"
